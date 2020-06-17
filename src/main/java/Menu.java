@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
@@ -22,15 +23,34 @@ public class Menu {
             );
             System.out.print("Your choice: ");
 
-            choice = in.nextInt();
+            try {
+                choice = in.nextInt();
+            } catch (InputMismatchException e) {
+                System.err.println("Illegal input, please try again.");
+                in.next();
+                choice = -1;
+            }
         } while (choice < 0 && choice > 3);
 
         // get (optional) n
         if (choice == 2 || choice == 3) {
-            // get additional parameter
-            while (n <= 0) {
+            while (true) {
                 System.out.print("Insert n: ");
-                n = in.nextInt();
+
+                try {
+                    n = in.nextInt();
+
+                    if (n <= 0) {
+                        System.err.println("n must be strictly positive.");
+                        continue;
+                    } else {
+                        break;
+                    }
+                } catch (InputMismatchException e) {
+                    System.err.println("Illegal input, please try again.");
+                    in.next();
+                    n = -1;
+                }
             }
         }
 
